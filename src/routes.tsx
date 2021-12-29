@@ -7,7 +7,7 @@ export function RoutesApp() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="newRoom" element={<NewRoom />} />
+        <Route path="new" element={<NewRoom />} />
       </Routes>
     </BrowserRouter>
   );

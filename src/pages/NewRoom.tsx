@@ -1,6 +1,7 @@
 import illustrationImg from "assets/images/illustration.svg";
 import logoImg from "assets/images/logo.svg";
 import { Button } from "components/Button";
+import { Link } from "react-router-dom";
 
 import "styles/auth.scss";
 
@@ -29,7 +30,7 @@ export function NewRoom() {
 
           <p>
             Quer entrar em uma sala existente?
-            <a href="#">clique aqui</a>
+            <Link to="/">clique aqui</Link>
           </p>
         </div>
       </main>

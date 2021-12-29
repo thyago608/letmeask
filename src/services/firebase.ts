@@ -1,17 +1,23 @@
-import { initializeApp } from "firebase/app";
+import * as firebase from "firebase/app";
 
+import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
+//Minhas configurações do firebase
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
+  apiKey: "AIzaSyA_AW68sPf8HKdQt9u21ztdMWH4iqYQKXU",
+  authDomain: "letmeask-ea27e.firebaseapp.com",
+  databaseURL: "https://letmeask-ea27e-default-rtdb.firebaseio.com",
+  projectId: "letmeask-ea27e",
+  storageBucket: "letmeask-ea27e.appspot.com",
+  messagingSenderId: "634469661989",
+  appId: "1:634469661989:web:b8cc354b032abe8f786ecc",
 };
+//Inicializando o app com as minhas configs
+firebase.initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
+//Será usado o database e a autenticação do app que estiver sido inicializado.
+const database = getDatabase();
+const auth = getAuth();
 
-const database = getDatabase(app);
+export { firebase, database, auth };
