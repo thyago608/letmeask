@@ -1,8 +1,8 @@
-import { Home } from "./pages/Home";
+import { RoutesApp } from "routes";
 import "styles/global.scss";
 
 function App() {
-  return <Home />;
+  return <RoutesApp />;
 }
 
 export default App;
