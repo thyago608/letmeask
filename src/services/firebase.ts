@@ -21,3 +21,4 @@ const database = getDatabase();
 const auth = getAuth();
 
 export { firebase, database, auth };
+

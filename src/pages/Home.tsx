@@ -3,21 +3,23 @@ import logoImg from "assets/images/logo.svg";
 import googleIconImg from "assets/images/google-icon.svg";
 import { Button } from "components/Button";
 import { useNavigate } from "react-router-dom";
-import { auth } from "services/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useAuth } from "hooks/useAuth";
 
 import "styles/auth.scss";
 
 export function Home() {
   const navigate = useNavigate();
+  const { signInWithGoogle, user } = useAuth();
 
-  function handleCreateRoom() {
-    const provider = new GoogleAuthProvider();
+  async function handleCreateRoom() {
+    if (!user) {
+      await signInWithGoogle();
+    }
 
-    signInWithPopup(auth, provider).then((result) => console.log(result));
-
-    // navigate("new");
+    navigate("new");
   }
+
+  console.log(user);
 
   return (
     <div id="page-auth">
