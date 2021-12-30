@@ -1,26 +1,54 @@
+import { useRef, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import * as firebaseDatabase from "firebase/database";
+import { useAuth } from "hooks/useAuth";
+import { Button } from "components/Button";
+import { database } from "services/firebase";
+
 import illustrationImg from "assets/images/illustration.svg";
 import logoImg from "assets/images/logo.svg";
 import googleIconImg from "assets/images/google-icon.svg";
-import { Button } from "components/Button";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "hooks/useAuth";
 
 import "styles/auth.scss";
 
 export function Home() {
   const navigate = useNavigate();
   const { signInWithGoogle, user } = useAuth();
+  const inputRoomCode = useRef<HTMLInputElement>(null);
 
   async function handleCreateRoom() {
     if (!user) {
       await signInWithGoogle();
     }
 
-    navigate("new");
+    navigate("rooms/new");
   }
 
-  console.log(user);
+  async function handleJoinRoom(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
+    //Se após retirar os espaços laterais o valor que estiver no campo se encontrar vazio.
+    if (inputRoomCode.current?.value.trim() === "") {
+      return;
+    }
+
+    //Pegando a referência de uma sala de acordo com o valor que está no input.
+    const roomRef = firebaseDatabase.ref(
+      database,
+      `rooms/${inputRoomCode.current?.value}`
+    );
+
+    //Buscando por informações da sala capturada anteriormente.
+    const getRoom = await firebaseDatabase.get(roomRef);
+
+    //Verificando se a mesma existe
+    if (!getRoom.exists()) {
+      alert("Room does not exists");
+      return;
+    }
+
+    navigate(`rooms/${getRoom.key}`);
+  }
   return (
     <div id="page-auth">
       <aside>
@@ -45,8 +73,12 @@ export function Home() {
           </button>
           <div className="separator">ou entre em uma sala</div>
 
-          <form action="">
-            <input type="text" placeholder="Digite o código da sala" />
+          <form onSubmit={handleJoinRoom}>
+            <input
+              type="text"
+              placeholder="Digite o código da sala"
+              ref={inputRoomCode}
+            />
             <Button type="submit">Entrar na sala</Button>
           </form>
         </div>

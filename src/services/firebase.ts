@@ -14,11 +14,10 @@ const firebaseConfig = {
   appId: "1:634469661989:web:b8cc354b032abe8f786ecc",
 };
 //Inicializando o app com as minhas configs
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 
 //Será usado o database e a autenticação do app que estiver sido inicializado.
-const database = getDatabase();
-const auth = getAuth();
+const database = getDatabase(app);
+const auth = getAuth(app);
 
 export { firebase, database, auth };
-

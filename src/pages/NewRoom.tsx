@@ -1,11 +1,43 @@
+import { FormEvent, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Button } from "components/Button";
 import illustrationImg from "assets/images/illustration.svg";
 import logoImg from "assets/images/logo.svg";
-import { Button } from "components/Button";
-import { Link } from "react-router-dom";
+
+import { database } from "services/firebase";
+
+import * as firebaseDatabase from "firebase/database";
+
+import { useAuth } from "hooks/useAuth";
 
 import "styles/auth.scss";
 
 export function NewRoom() {
+  const inputRoom = useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleCreateRoom(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    //Se após retirar os espaços laterais o valor que estiver no campo for vazio.
+    if (inputRoom.current?.value.trim() === "") {
+      return;
+    }
+
+    //Criando uma referência no banco de dados, caso a mesma não exista.
+    const roomRef = firebaseDatabase.ref(database, "rooms");
+
+    //Criando uma informação dentro de uma referência
+    const firebaseRoom = await firebaseDatabase.push(roomRef, {
+      title: inputRoom.current?.value,
+      authorId: user?.id,
+    });
+
+    navigate(`/rooms/${firebaseRoom.key}`);
+  }
+
   return (
     <div id="page-auth">
       <aside>
@@ -23,8 +55,8 @@ export function NewRoom() {
 
           <h2>Criar um nova Sala</h2>
 
-          <form action="">
-            <input type="text" placeholder="Nome da sala" />
+          <form onSubmit={handleCreateRoom}>
+            <input type="text" placeholder="Nome da sala" ref={inputRoom} />
             <Button type="submit">Criar sala</Button>
           </form>
 
