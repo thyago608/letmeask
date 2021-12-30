@@ -1,9 +1,11 @@
 import { useRef, FormEvent, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAuth } from "hooks/useAuth";
+import { useRoom } from "hooks/useRoom";
 import { Button } from "components/Button";
 import { RoomCode } from "components/RoomCode";
-import { database, firebase } from "services/firebase";
+import { Question } from "components/Question";
+import { database } from "services/firebase";
 import * as firebaseDatabase from "firebase/database";
 
 import logoImg from "assets/images/logo.svg";
@@ -14,36 +16,11 @@ type RoomParams = {
   id: string;
 };
 
-type FirebaseQuestions = Record<
-  string,
-  {
-    author: {
-      name: string;
-      avatar: string;
-    };
-    content: string;
-    isAnswered: boolean;
-    isHighlighted: boolean;
-  }
->;
-
-type Question = {
-  id: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  content: string;
-  isAnswered: boolean;
-  isHighlighted: boolean;
-};
-
 export function Room() {
   const { id } = useParams<RoomParams>();
   const { user } = useAuth();
+  const { title, questions } = useRoom(id as string);
   const questionRef = useRef<HTMLTextAreaElement>(null);
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [title, setTitle] = useState("");
 
   async function handleSendQuestion(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -78,58 +55,6 @@ export function Room() {
 
     questionRef.current!.value = "";
   }
-
-  useEffect(() => {
-    const getFirebaseQuestions = async () => {
-      //Referênciando a sala atual no banco de dados
-      const roomRef = firebaseDatabase.ref(database, `rooms/${id}`);
-
-      //Buscando as informações da sala atual no banco
-      const roomData = await firebaseDatabase.get(roomRef);
-
-      const databaseroom = roomData.val();
-
-      const firebaseQuestions: FirebaseQuestions = databaseroom.questions ?? {};
-
-      let questionsFormatted = [];
-
-      for (const [key, value] of Object.entries(firebaseQuestions)) {
-        questionsFormatted.push({
-          id: key,
-          ...value,
-        });
-      }
-
-      setQuestions([...questionsFormatted]);
-      setTitle(databaseroom.title);
-    };
-
-    getFirebaseQuestions();
-  }, [id]);
-
-  useEffect(() => {
-    const roomRef = firebaseDatabase.ref(database, `rooms/${id}`);
-
-    const newQuestions = firebaseDatabase.onChildChanged(
-      roomRef,
-      (questions) => {
-        const questionsRoom: FirebaseQuestions = questions.val();
-
-        let questionsFormatted = [];
-
-        for (const [key, value] of Object.entries(questionsRoom)) {
-          questionsFormatted.push({
-            id: key,
-            ...value,
-          });
-        }
-
-        setQuestions([...questionsFormatted]);
-      }
-    );
-
-    return () => newQuestions();
-  }, []);
 
   return (
     <div id="page-room">
@@ -169,7 +94,15 @@ export function Room() {
             </Button>
           </div>
         </form>
-        {JSON.stringify(questions)}
+        <div className="question-list">
+          {questions.map((question) => (
+            <Question
+              key={question.id}
+              author={question.author}
+              content={question.content}
+            />
+          ))}
+        </div>
       </main>
     </div>
   );
