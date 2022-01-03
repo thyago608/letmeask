@@ -1,6 +1,4 @@
-import { useRef, FormEvent, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useAuth } from "hooks/useAuth";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useRoom } from "hooks/useRoom";
 import { Button } from "components/Button";
 import { RoomCode } from "components/RoomCode";
@@ -8,6 +6,7 @@ import { Question } from "components/Question";
 import { database } from "services/firebase";
 import * as firebaseDatabase from "firebase/database";
 
+import deleteImg from "assets/images/delete.svg";
 import logoImg from "assets/images/logo.svg";
 
 import "styles/room.scss";
@@ -18,42 +17,29 @@ type RoomParams = {
 
 export function AdminRoom() {
   const { id } = useParams<RoomParams>();
-  const { user } = useAuth();
   const { title, questions } = useRoom(id as string);
-  const questionRef = useRef<HTMLTextAreaElement>(null);
+  const navigate = useNavigate();
 
-  async function handleSendQuestion(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleEndRoom() {
+    const roomRef = firebaseDatabase.ref(database, `rooms/${id}`);
 
-    //Se o usuário não estiver autenticado
-    if (!user) {
-      throw new Error("You must be logged in");
+    await firebaseDatabase.update(roomRef, {
+      endedAt: new Date(),
+    });
+
+    navigate("/");
+  }
+
+  async function handleDeleteQuestion(questionId: string) {
+    //O Window.confirm retornará um valor booleano de acordo com a escolha do usuário
+    if (window.confirm("Você deseja excluir essa pergunta?")) {
+      const questionRef = firebaseDatabase.ref(
+        database,
+        `rooms/${id}/questions/${questionId}`
+      );
+
+      await firebaseDatabase.remove(questionRef);
     }
-
-    //Se após retirar os espaços laterais o valor que está no textarea estiver vazio.
-    if (questionRef.current?.value.trim() === "") {
-      return;
-    }
-
-    const question = {
-      content: questionRef.current?.value,
-      author: {
-        name: user.name,
-        avatar: user.avatar,
-      },
-      isAnswered: false,
-      isHighlighted: false,
-    };
-
-    //Referênciando um local dentro do banco de dados
-    const questionsRef = firebaseDatabase.ref(
-      database,
-      `rooms/${id}/questions`
-    );
-
-    await firebaseDatabase.push(questionsRef, question);
-
-    questionRef.current!.value = "";
   }
 
   return (
@@ -66,7 +52,9 @@ export function AdminRoom() {
 
           <div>
             <RoomCode code={id as string} />
-            <Button isOutlined>Encerrar Sala</Button>
+            <Button isOutlined onClick={handleEndRoom}>
+              Encerrar Sala
+            </Button>
           </div>
         </div>
       </header>
@@ -83,7 +71,14 @@ export function AdminRoom() {
               key={question.id}
               author={question.author}
               content={question.content}
-            />
+            >
+              <button
+                type="button"
+                onClick={() => handleDeleteQuestion(question.id)}
+              >
+                <img src={deleteImg} alt="Remover Pergunta" />
+              </button>
+            </Question>
           ))}
         </div>
       </main>
