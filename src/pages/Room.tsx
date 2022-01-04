@@ -6,7 +6,7 @@ import { Button } from "components/Button";
 import { RoomCode } from "components/RoomCode";
 import { Question } from "components/Question";
 import { Loading } from "components/Loading";
-import { database, firebase } from "services/firebase";
+import { database } from "services/firebase";
 import * as firebaseDatabase from "firebase/database";
 
 import logoImg from "assets/images/logo.svg";

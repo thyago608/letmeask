@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "hooks/useAuth";
 import * as firebaseDatabase from "firebase/database";
-import { database, firebase } from "services/firebase";
+import { database } from "services/firebase";
 
 type FirebaseQuestions = Record<
   string,
