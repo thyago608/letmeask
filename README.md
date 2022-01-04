@@ -4,7 +4,6 @@
 
 A aplicação **letmeask**, é uma plataforma em que os usuários podem realizar perguntas, assim como acompanhar perguntas realizadas ao criador da sala. O projeto foi desenvolvido em uma **Next Level Week: Together**
 
---
 
 ## Tecnologias utilizadas
 
