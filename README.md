@@ -1,4 +1,4 @@
-<img src="src/assets/capa.png" alt="letmeask"/>
+<img src="src/assets/images/capa.png" alt="letmeask"/>
 
 ## Sobre
 
