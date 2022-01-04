@@ -40,6 +40,7 @@ export function useRoom(id: string) {
   const [title, setTitle] = useState("");
   const { user } = useAuth();
 
+  //Busca as questions no Banco do Firebase
   useEffect(() => {
     const getFirebaseQuestions = async () => {
       //Referênciando a sala atual no banco de dados
@@ -75,8 +76,9 @@ export function useRoom(id: string) {
     };
 
     getFirebaseQuestions();
-  }, [id]);
+  }, [id, user?.id]);
 
+  //Monitoramento das atualizações no Banco do Firebase
   useEffect(() => {
     const roomRef = firebaseDatabase.ref(database, `rooms/${id}`);
 
@@ -106,7 +108,7 @@ export function useRoom(id: string) {
     );
 
     return () => unSubscribeNewQuestions();
-  }, []);
+  }, [id, user?.id]);
 
   return { title, questions };
 }

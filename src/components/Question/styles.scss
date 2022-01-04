@@ -8,6 +8,19 @@
     margin-top: 8px;
   }
 
+  &.answered {
+    background: #d8dcdd;
+  }
+
+  &.highlighted {
+    background: #f4f0ff;
+    border: 1px solid #835afd;
+
+    footer .user-info span {
+      color: #29292e;
+    }
+  }
+
   p {
     color: #29292e;
   }
@@ -18,6 +31,11 @@
     align-items: center;
 
     margin-top: 24px;
+
+    div {
+      display: flex;
+      gap: 16px;
+    }
 
     .user-info {
       display: flex;
