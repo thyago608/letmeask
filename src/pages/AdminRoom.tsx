@@ -13,6 +13,7 @@ import deleteImg from "assets/images/delete.svg";
 import logoImg from "assets/images/logo.svg";
 
 import "styles/room.scss";
+import { NotFound } from "components/NotFound";
 
 type RoomParams = {
   id: string;
@@ -90,46 +91,56 @@ export function AdminRoom() {
 
       <main className="content">
         <div className="room-title">
-          <h1>Sala {title}</h1>
+          <h1>{title}</h1>
           {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
 
-        <div className="question-list">
-          {questions.map((question) => (
-            <Question
-              key={question.id}
-              author={question.author}
-              content={question.content}
-              isAnswered={question.isAnswered}
-              isHighlighted={question.isHighlighted}
-            >
-              {!question.isAnswered && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => handleHighlightQuestion(question.id)}
-                  >
-                    <img src={checkImg} alt="Marcar pergunta como respondida" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleCheckQuestionAsAnswered(question.id)}
-                  >
-                    <img src={answerImg} alt="Dar destaque à pergunta" />
-                  </button>
-                </>
-              )}
-
-              <button
-                type="button"
-                onClick={() => handleDeleteQuestion(question.id)}
+        {questions.length > 0 ? (
+          <div className="question-list">
+            {questions.map((question) => (
+              <Question
+                key={question.id}
+                author={question.author}
+                content={question.content}
+                isAnswered={question.isAnswered}
+                isHighlighted={question.isHighlighted}
               >
-                <img src={deleteImg} alt="Remover Pergunta" />
-              </button>
-            </Question>
-          ))}
-        </div>
+                {!question.isAnswered && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => handleHighlightQuestion(question.id)}
+                    >
+                      <img
+                        src={checkImg}
+                        alt="Marcar pergunta como respondida"
+                      />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleCheckQuestionAsAnswered(question.id)}
+                    >
+                      <img src={answerImg} alt="Dar destaque à pergunta" />
+                    </button>
+                  </>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => handleDeleteQuestion(question.id)}
+                >
+                  <img src={deleteImg} alt="Remover Pergunta" />
+                </button>
+              </Question>
+            ))}
+          </div>
+        ) : (
+          <div className="container-empty">
+            <NotFound />
+            <span>Até o momento não existem perguntas nesta sala</span>
+          </div>
+        )}
       </main>
     </div>
   );

@@ -47,6 +47,7 @@ export function Home() {
       return;
     }
 
+    //Verificando se a sala se encontra fechada
     if (getRoom.val().endedAt) {
       alert("Room already closed.");
       return;

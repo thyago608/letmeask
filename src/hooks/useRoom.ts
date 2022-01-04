@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "hooks/useAuth";
 import * as firebaseDatabase from "firebase/database";
-import { database } from "services/firebase";
+import { database, firebase } from "services/firebase";
 
 type FirebaseQuestions = Record<
   string,
@@ -80,9 +80,9 @@ export function useRoom(id: string) {
 
   //Monitoramento das atualizações no Banco do Firebase
   useEffect(() => {
-    const roomRef = firebaseDatabase.ref(database, `rooms/${id}`);
+    const roomRef = firebaseDatabase.ref(database, `rooms/${id}/questions`);
 
-    const unSubscribeNewQuestions = firebaseDatabase.onChildChanged(
+    const unSubscribeNewQuestions = firebaseDatabase.onValue(
       roomRef,
       (questions) => {
         const questionsRoom: FirebaseQuestions = questions.val();
@@ -106,9 +106,16 @@ export function useRoom(id: string) {
         setQuestions([...questionsFormatted]);
       }
     );
-
     return () => unSubscribeNewQuestions();
   }, [id, user?.id]);
 
   return { title, questions };
 }
+
+/*
+
+
+    
+
+
+*/

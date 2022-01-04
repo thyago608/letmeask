@@ -9,11 +9,17 @@
     background: #835afd;
     color: #fff;
 
+    position: absolute;
+    transform: translateX(-100vw);
+    opacity: 0;
+
+    transition: opacity 0.5s ease;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
 
-    padding: 120px 80px;
+    padding: 7.5rem 5rem;
 
     img {
       max-width: 320px;
@@ -21,14 +27,14 @@
 
     strong {
       font: 700 36px "Poppins", sans-serif;
-      line-height: 42px;
-      margin-top: 16px;
+      line-height: 2.5rem;
+      margin-top: 1rem;
     }
 
     p {
-      font-size: 24px;
-      line-height: 32px;
-      margin-top: 16px;
+      font-size: 1.2rem;
+      line-height: 2rem;
+      margin-top: 1rem;
       color: #f8f8f8;
     }
   }
@@ -36,11 +42,19 @@
   main {
     flex: 8;
 
-    padding: 0 32px;
+    padding: 0 2rem;
 
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  @media (min-width: 1000px) {
+    aside {
+      position: initial;
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 }
 
@@ -57,23 +71,23 @@
   }
 
   h2 {
-    font-size: 24px;
-    margin: 64px 0 24px;
+    font-size: 1.5rem;
+    margin: 4rem 0 1.5rem;
     font-family: "Poppins", sans-serif;
   }
 
   form {
     input {
       height: 50px;
-      border-radius: 8px;
-      padding: 0 16px;
+      border-radius: 0.5rem;
+      padding: 0 1rem;
 
       background: #fff;
       border: 1px solid #a8a8b3;
     }
 
     button {
-      margin-top: 16px;
+      margin-top: 1rem;
     }
 
     button,
@@ -83,9 +97,9 @@
   }
 
   p {
-    font-size: 14px;
+    font-size: 1rem;
     color: #737380;
-    margin-top: 16px;
+    margin-top: 1rem;
 
     a {
       color: #e559f9;
@@ -93,9 +107,9 @@
   }
 
   .create-room {
-    margin-top: 64px;
+    margin-top: 4rem;
     height: 50px;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     font-weight: 500;
     background: #ea4335;
     color: #fff;
@@ -110,7 +124,7 @@
     transition: filter 0.2s ease;
 
     img {
-      margin-right: 8px;
+      margin-right: 0.5rem;
     }
 
     &:hover {
@@ -119,10 +133,10 @@
   }
 
   .separator {
-    font-size: 14px;
+    font-size: 1rem;
     color: #a8a8b3;
 
-    margin: 32px 0;
+    margin: 2rem 0;
 
     display: flex;
     align-items: center;
@@ -136,11 +150,11 @@
     }
 
     &::before {
-      margin-right: 16px;
+      margin-right: 1rem;
     }
 
     &::after {
-      margin-left: 16px;
+      margin-left: 1rem;
     }
   }
 }

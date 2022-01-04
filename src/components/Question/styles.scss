@@ -1,11 +1,15 @@
 .question {
   background: #fefefe;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-  padding: 24px;
+  padding: 1.5rem;
+  transform: translateX(-300px);
+  opacity: 0;
+
+  transition: opacity 0.3s ease, transform 0.3s ease;
 
   & + .question {
-    margin-top: 8px;
+    margin-top: 0.5rem;
   }
 
   &.answered {
@@ -21,20 +25,27 @@
     }
   }
 
+  &.isVisible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
   p {
     color: #29292e;
   }
 
   footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
     align-items: center;
 
-    margin-top: 24px;
+    margin-top: 1.5rem;
 
     div {
       display: flex;
-      gap: 16px;
+      gap: 1rem;
+      margin-top: 1rem;
     }
 
     .user-info {
@@ -48,9 +59,9 @@
       }
 
       span {
-        margin-left: 8px;
+        margin-left: 0.5rem;
         color: #737380;
-        font-size: 14px;
+        font-size: 0.9rem;
       }
     }
 
@@ -78,6 +89,16 @@
         &:hover {
           filter: brightness(0.7);
         }
+      }
+    }
+
+    @media (min-width: 350px) {
+      & {
+        justify-content: space-between;
+      }
+
+      div {
+        margin-top: 0;
       }
     }
   }

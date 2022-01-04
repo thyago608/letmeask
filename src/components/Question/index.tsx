@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import classNames from "classnames";
 import "./styles.scss";
 
@@ -20,12 +20,21 @@ export function Question({
   isAnswered = false,
   isHighlighted = false,
 }: QuestionProps) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 500);
+  }, []);
+
   return (
     <div
       className={classNames(
         "question",
         { answered: isAnswered },
-        { highlighted: isHighlighted && !isAnswered }
+        { highlighted: isHighlighted && !isAnswered },
+        { isVisible: isVisible }
       )}
     >
       <p>{content}</p>
