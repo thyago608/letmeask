@@ -30,7 +30,7 @@ O projeto foi desenvolvido com as seguintes tecnologias:
     $ npm install
 
     # Executando a aplicação
-    $ yarn start
+    $ npm run dev
 ```
 
 [Visite](https://letmeask-ea27e.web.app/) 
